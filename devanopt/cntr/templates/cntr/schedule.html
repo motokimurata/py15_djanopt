@@ -2,13 +2,101 @@
 
 {% block content %}
 <head>
+    <title >カレンダー表示</title>
+    <a href="/" class="button is-danger is-hoverable  is-inverted is-bold" style="margin: 10px 10px 0 0;">Back</a>
+    <a href="/download_csv/" class="button is-danger is-hoverable is-bold" download="result.csv" style="float: right; margin: 10px 10px 0 0;">Download CSV</a>
     <meta charset='utf-8' />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css">
+    <style>
+        /* モーダルウィンドウのスタイル */
+        .modal {
+            display: none; /* 最初は非表示 */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 30%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(255, 255, 255, 0.8); /* 背景色を半透明の白に設定 */
+        }
 
+        /* モーダルウィンドウのコンテンツスタイル */
+        .modal-content {
+            background-color: white; /* 背景色を白に設定 */
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        /* 閉じるボタンのスタイル */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* 閉じるボタンがホバーされたときのスタイル */
+        .close:hover {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="calendar"></div>
+    <div id="calendar" style="margin: 10px 10px 0 0;"></div>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    
+    <!-- モーダルウィンドウ用のHTMLコード -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="eventModalTitle"></h2>
+            <div id="eventModalContent"></div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: {{ calendar_events|safe }},
+                eventClick: function(info) {
+                    var event = info.event;
+                    var modal = document.getElementById('eventModal');
+                    var modalTitle = document.getElementById('eventModalTitle');
+                    var modalContent = document.getElementById('eventModalContent');
+        
+                    modalTitle.textContent = event.title;
+                    modalContent.innerHTML = `
+                        コンテナ番号: ${event.extendedProps.container_number}<br>
+                        部署: ${event.extendedProps.department}<br>
+                        納入倉庫: ${event.extendedProps.warehouse}<br>
+                        入港日: ${event.extendedProps.arrival_date}<br>
+                        希望納品日: ${event.extendedProps.desired_delivery_date}<br>
+                        最適納品日: ${event.extendedProps.optimal_delivery_date}
+                    `;
+        
+                    modal.style.display = 'block';
+        
+                    var closeButton = document.querySelector('.close');
+                    closeButton.onclick = function() {
+                        modal.style.display = 'none';
+                    };
+        
+                    window.onclick = function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = 'none';
+                        }
+                    };
+                }
+            });
+            calendar.render();
+        });
+    </script>
 </body>
 {% endblock %}

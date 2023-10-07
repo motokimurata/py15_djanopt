@@ -101,22 +101,33 @@ def download_csv(request):
 def schedule(request):
     tbl_result_load = request.session.get('tbl_result', None)
     df_tbl_result = pd.DataFrame(tbl_result_load)
-    
+
     # カレンダー用のデータを格納するリスト
     calendar_events = []
 
     for index, row in df_tbl_result.iterrows():
+        # 希望納品日を文字列からJavaScriptのDateオブジェクトに変換
+        start_date = row['最適納品日']
+
         event = {
             'title': f"{row['コンテナ番号']} - {row['部署']}",  # イベントのタイトルにコンテナNoと部署名を含む
-            'start': row['希望納品日'],  # 希望納品日を開始日とする
-            'end': row['希望納品日'],  # 希望納品日を終了日とする（同一日の場合）
+            'start': start_date,  # 希望納品日をJavaScriptのDateオブジェクトとして設定
+            'end': start_date,  # 希望納品日を終了日とする（同一日の場合）
             'description': '',  # イベントの説明（オプション）
+            'extendedProps': {  # カスタムプロパティを追加
+                'container_number': row['コンテナ番号'],
+                'department': row['部署'],
+                'warehouse': row['納入倉庫'],
+                'arrival_date': row['入港日'],
+                'desired_delivery_date': row['希望納品日'],
+                'optimal_delivery_date': row['最適納品日'],
+            }
         }
         calendar_events.append(event)
 
     # カレンダー用のデータをJSONに変換してテンプレートに渡す
     calendar_events_json = json.dumps(calendar_events)
-    
+
     context = {
         'calendar_events': calendar_events_json,
     }
