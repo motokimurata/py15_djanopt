@@ -13,12 +13,16 @@ from django.template import loader
 
 def frontpage(request):
     if request.method == 'POST':
-        print("hello")
-        tbl_result = cal_opt(request)
-        if tbl_result is not None:
-            request.session['tbl_result'] = tbl_result
-            return redirect('display_csv')  # リダイレクト
-    form = UploadCSVForm()
+        form = UploadCSVForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = request.FILES['csv_file']
+            if uploaded_file.name.endswith('.csv'):
+                tbl_result = cal_opt(request)
+                if tbl_result is not None:
+                    request.session['tbl_result'] = tbl_result
+                return redirect('display_csv')
+    else:
+        form = UploadCSVForm()
     return render(request, 'cntr/frontpage.html', {'form': form})
 
 def cal_opt(request):
