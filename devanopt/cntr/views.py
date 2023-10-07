@@ -20,7 +20,7 @@ def frontpage(request):
                 tbl_result = cal_opt(request)
                 if tbl_result is not None:
                     request.session['tbl_result'] = tbl_result
-                return redirect('display_csv')
+                return HttpResponseRedirect(reverse('display_csv'))
     else:
         form = UploadCSVForm()
     return render(request, 'cntr/frontpage.html', {'form': form})
@@ -53,7 +53,6 @@ def cal_opt(request):
             tbl_temp_result['希望納品日'] = tbl_temp_result['希望納品日'].dt.strftime('%Y-%m-%d')
             tbl_temp_result['最適納品日'] = tbl_temp_result['最適納品日'].apply(lambda x: x.strftime('%Y-%m-%d'))
             tbl_result=tbl_temp_result.to_dict()
-            print(tbl_result)
             return tbl_result
 
             #return display_csv(request, tbl_result=tbl_result)
@@ -62,10 +61,7 @@ def cal_opt(request):
     return None
 
 def display_csv(request):
-    # セッションから tbl_result を取得
-    print(request)
     tbl_result = cal_opt(request)
-    print(tbl_result)
     if tbl_result is not None:
             request.session['tbl_result'] = tbl_result
             return HttpResponseRedirect(reverse('display_csv'))
@@ -73,6 +69,7 @@ def display_csv(request):
     tbl_result_load = request.session.get('tbl_result', None)
     # データフレーム形式に戻す。
     df_tbl_result = pd.DataFrame(tbl_result_load)   
+    #print(tbl_result_load)
     tbl_result = df_tbl_result.to_html(index=False, escape=False, header=True)
     
     context = {
@@ -110,7 +107,7 @@ def schedule(request):
 
     for index, row in df_tbl_result.iterrows():
         event = {
-            'title': f"{row['コンテナNo']} - {row['部署名']}",  # イベントのタイトルにコンテナNoと部署名を含む
+            'title': f"{row['コンテナ番号']} - {row['部署']}",  # イベントのタイトルにコンテナNoと部署名を含む
             'start': row['希望納品日'],  # 希望納品日を開始日とする
             'end': row['希望納品日'],  # 希望納品日を終了日とする（同一日の場合）
             'description': '',  # イベントの説明（オプション）

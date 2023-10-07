@@ -11,6 +11,8 @@ urlpatterns = [
     path("", frontpage),
     path('display_csv/', display_csv, name='display_csv'),  # CSVアップロード用のURL
     path('download_csv/', download_csv, name='download_csv'),
+    path('sc/', schedule, name='schedule'),
+
 
 ]
 
