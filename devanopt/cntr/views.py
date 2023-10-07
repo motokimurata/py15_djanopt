@@ -20,7 +20,7 @@ def frontpage(request):
                 tbl_result = cal_opt(request)
                 if tbl_result is not None:
                     request.session['tbl_result'] = tbl_result
-                return HttpResponseRedirect(reverse('display_csv'))
+                return HttpResponseRedirect(reverse('schedule'))
     else:
         form = UploadCSVForm()
     return render(request, 'cntr/frontpage.html', {'form': form})
@@ -61,11 +61,6 @@ def cal_opt(request):
     return None
 
 def display_csv(request):
-    tbl_result = cal_opt(request)
-    if tbl_result is not None:
-            request.session['tbl_result'] = tbl_result
-            return HttpResponseRedirect(reverse('display_csv'))
-
     tbl_result_load = request.session.get('tbl_result', None)
     # データフレーム形式に戻す。
     df_tbl_result = pd.DataFrame(tbl_result_load)   

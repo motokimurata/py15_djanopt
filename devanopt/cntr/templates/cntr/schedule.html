@@ -1,5 +1,6 @@
 {% extends "cntr/base.html" %}
 
+{% load static %}
 {% block content %}
 <head>
     <title >カレンダー表示</title>
@@ -43,12 +44,33 @@
             text-decoration: none;
             cursor: pointer;
         }
+        /* カレンダーの罫線スタイル */
+        .fc-daygrid-table {
+            border-collapse: collapse;  /* セル間の間隔を狭くする */
+            width: 100%;
+        }
+    
+        .fc-daygrid-day {
+            border: 1px solid #ddd;  /* セルの罫線を追加 */
+            padding: 5px;  /* セル内の余白を調整 */
+        }
+    
+        .fc-daygrid-day-top {
+            border-bottom: none;  /* 上側の罫線を非表示 */
+        }
+    
+        .fc-daygrid-day-left {
+            border-right: none;  /* 左側の罫線を非表示 */
+        }
     </style>
 </head>
 
 <body>
     <div id="calendar" style="margin: 10px 10px 0 0;"></div>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <script src="{% static 'cntr/apps.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/ja.js"></script>
     
     <!-- モーダルウィンドウ用のHTMLコード -->
     <div id="eventModal" class="modal">
@@ -63,7 +85,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
+                locale: 'ja',
+                firstDay: 1,
+                headerToolbar: {
+                    left: "dayGridMonth,listMonth",
+                    center: "title",
+                    right: "today prev,next"
+                },
+                height: 'auto', // カレンダーの高さを自動調整
+                buttonText: {
+                    today: '当月',
+                    month: '月',
+                    list: 'リスト'
+                }, 
                 events: {{ calendar_events|safe }},
                 eventClick: function(info) {
                     var event = info.event;

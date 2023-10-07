@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', function () {
-    var calendarEl = document.getElementById('calendar'); // カレンダーを表示する要素を取得
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'ja',
         firstDay: 1,
         headerToolbar: {
@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', function () {
           },
         height: 'auto', // カレンダーの高さを自動調整
         buttonText: {
-            today: '今月',
+            today: '当月',
             month: '月',
             list: 'リスト'
-          },    
+          }, 
     });
 
     // FullCalendarの初期化
