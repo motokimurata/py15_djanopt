@@ -1,7 +1,7 @@
 {% extends "cntr/base.html" %}
 
 {% block content %}
-    <form action="{% url 'frontpage' %}" method="post">
+    <form method="post" enctype="multipart/form-data">
         <!--
         ここでフォームの内容を追加する場合、フォームフィールドを配置します。
         {{ form.as_p }} などを使ってフォームフィールドを表示できます。
