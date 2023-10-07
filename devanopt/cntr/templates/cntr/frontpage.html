@@ -1,0 +1,16 @@
+{% extends "cntr/base.html" %}
+
+{% block content %}
+    <form action="{% url 'frontpage' %}" method="post">
+        <!--
+        ここでフォームの内容を追加する場合、フォームフィールドを配置します。
+        {{ form.as_p }} などを使ってフォームフィールドを表示できます。
+        -->
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ form.errors }}  {# フォームのバリデーションエラーメッセージを表示 #}        
+        <input type="submit" value="計算開始" class="button is-danger is-hoverable is-bold">
+    </form>
+    
+    <!-- ここに追加したいコンテンツを挿入 -->
+{% endblock %}

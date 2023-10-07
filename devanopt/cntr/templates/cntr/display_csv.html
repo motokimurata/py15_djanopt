@@ -1,0 +1,19 @@
+{% extends "cntr/base.html" %}
+
+{% block content %}
+<!-- display_csv.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title >CSVデータ表示</title>
+</head>
+<body>
+    <a href="/" class="button is-danger is-hoverable  is-inverted is-bold" style="margin: 10px 10px 0 0;">Back</a>
+    <a href="/download_csv/" class="button is-danger is-hoverable is-bold" download="result.csv" style="float: right; margin: 10px 10px 0 0;">Download CSV</a>
+    <table style="text-align: center;">
+        {{ tbl_result|safe }}
+    </table>
+
+</body>
+</html>
+{% endblock %}

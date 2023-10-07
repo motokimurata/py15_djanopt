@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "py15-djanopt"
+version = "0.1.0"
+description = ""
+authors = ["Tomoko Umeyama"]
+readme = "README.md"
+packages = [{include = "py15-djanopt"}]
+
+[tool.poetry.dependencies]
+python = "3.8.10"
+tkcalendar = "^1.6.1"
+pandas = "1.4.1"
+ortoolpy = "0.2.38"
+matplotlib = "3.5.1"
+pillow = "9.01"
+django = "^4.2.4"
+jinja2 = "^3.1.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

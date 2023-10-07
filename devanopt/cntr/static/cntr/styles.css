@@ -1,0 +1,28 @@
+/* styles.css */
+
+.date-range-widget {
+    display: inline-block; /* 横並びに配置 */
+    margin-right: 10px; /* 開始日と終了日の間に余白を追加 */
+}
+
+/* 期間の間に " ～ " を表示 */
+.date-range-widget::after {
+    content: " ～ ";
+    margin-left: 10px; /* " ～ " の前に余白を追加 */
+}
+
+#calendar {
+    height: 100%; /* カレンダーの親要素の高さを100%に設定 */
+    overflow: auto; /* スクロールバーを表示 */
+}
+
+/* FullCalendarの曜日ヘッダーと日付のスタイルを調整 */
+.fc-day-header, .fc-day {
+    text-align: center; /* テキストを中央寄せにする */
+    border: 1px solid #ccc; /* 罫線を追加する */
+}
+
+/* グリッド内の罫線を調整（オプション） */
+.fc-divider {
+    border: none; /* 不要な罫線を非表示にする */
+}
