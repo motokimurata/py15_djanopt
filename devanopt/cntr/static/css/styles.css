@@ -13,24 +13,25 @@
 
 #calendar {
     height: 50%;
-    width: 60%; /* カレンダーの幅を60%に設定 */
+    width: 80%; /* カレンダーの幅を60%に設定 */
     overflow: auto; /* スクロールバーを表示 */
     justify-content: center; /* 横方向の中央揃え */
     margin: 10px 10px 10px 0px;
 }
-
 /* カレンダーの罫線スタイル */
 .fc-scrollgrid-sync-table {
     border: 10px solid #111010;  /* セルの罫線を追加 */
-    border-collapse: collapse;  /* セル間の間隔を狭くする */
     width: 100%;
     text-align: center; /* テキストを中央寄せにする */
 }
 
 .fc-daygrid-day {
-    border: 10px solid #111010;  /* セルの罫線を追加 */
+    border: 10px solid #333;  /* セルの罫線を追加 */
     padding: 5px;  /* セル内の余白を調整 */
-
+}
+.fc-day-header {
+    border: 1px solid #333; /* 曜日セルの罫線を追加 */
+    padding: 5px; /* セル内の余白を調整 */
 }
 
  /* モーダルウィンドウのスタイル */

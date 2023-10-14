@@ -105,10 +105,11 @@ def schedule(request):
         start_date = row['最適納品日']
 
         event = {
-            'title': f"{row['コンテナ番号']} - {row['部署']}",  # イベントのタイトルにコンテナNoと部署名を含む
+            'title': f"{row['部署']} - {row['コンテナ番号']}",  # イベントのタイトルにコンテナNoと部署名を含む
             'start': start_date,  # 希望納品日をJavaScriptのDateオブジェクトとして設定
             'end': start_date,  # 希望納品日を終了日とする（同一日の場合）
             'description': '',  # イベントの説明（オプション）
+            'color': 'red',  # イベントの背景色を赤に設定
             'extendedProps': {  # カスタムプロパティを追加
                 'container_number': row['コンテナ番号'],
                 'department': row['部署'],
