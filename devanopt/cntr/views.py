@@ -60,22 +60,23 @@ def cal_opt(request):
     print(errors)
     return None
         
-def download_csv(request):
+def download_excel(request):
     # セッションから tbl_result を取得
     tbl_result_load = request.session.get('tbl_result', None)
     if tbl_result_load:
-        # データフレーム形式に戻す。
+        # データフレーム形式に戻す
         df_tbl_result = pd.DataFrame(tbl_result_load)
 
-        
+        # 現在の日時を取得してフォーマット
         current_datetime = datetime.now().strftime('%Y%m%d%H%M%S')
-        filename = f"result_csv_{current_datetime}.csv"
-        
-        # CSVファイルを作成
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = f'attachment; filename="{filename}"'
-        df_tbl_result.to_csv(path_or_buf=response, sep=';', float_format='%.2f', index=False, decimal=",")
-        
+
+        # ファイル名に日時を追加してExcel形式でダウンロードするためのHttpResponseを生成
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = f'attachment; filename="result_excel_{current_datetime}.xlsx'
+
+        # データフレームをExcel形式に変換してHttpResponseに書き込み
+        df_tbl_result.to_excel(response, index=False, engine='openpyxl')
+
         return response
 
     return HttpResponse("Invalid Request")
