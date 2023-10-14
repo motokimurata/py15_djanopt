@@ -7,71 +7,15 @@
     <a href="/" class="button is-danger is-hoverable  is-inverted is-bold" style="margin: 10px 10px 0 0;">Back</a>
     <a href="/download_csv/" class="button is-danger is-hoverable is-bold" download="result.csv" style="float: right; margin: 10px 10px 0 0;">Download CSV</a>
     <meta charset='utf-8' />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css">
-    <style>
-        /* モーダルウィンドウのスタイル */
-        .modal {
-            display: none; /* 最初は非表示 */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 30%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(255, 255, 255, 0.8); /* 背景色を半透明の白に設定 */
-        }
-
-        /* モーダルウィンドウのコンテンツスタイル */
-        .modal-content {
-            background-color: white; /* 背景色を白に設定 */
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-        /* 閉じるボタンのスタイル */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        /* 閉じるボタンがホバーされたときのスタイル */
-        .close:hover {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        /* カレンダーの罫線スタイル */
-        .fc-daygrid-table {
-            border-collapse: collapse;  /* セル間の間隔を狭くする */
-            width: 100%;
-        }
-    
-        .fc-daygrid-day {
-            border: 1px solid #ddd;  /* セルの罫線を追加 */
-            padding: 5px;  /* セル内の余白を調整 */
-        }
-    
-        .fc-daygrid-day-top {
-            border-bottom: none;  /* 上側の罫線を非表示 */
-        }
-    
-        .fc-daygrid-day-left {
-            border-right: none;  /* 左側の罫線を非表示 */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css">
 </head>
 
 <body>
-    <div id="calendar" style="margin: 10px 10px 0 0;"></div>
+    <div id="calendar"></div>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
-    <script src="{% static 'cntr/apps.js' %}"></script>
+    <script src="{% static 'js/apps.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/ja.js"></script>
-    
     <!-- モーダルウィンドウ用のHTMLコード -->
     <div id="eventModal" class="modal">
         <div class="modal-content">
@@ -93,6 +37,7 @@
                     right: "today prev,next"
                 },
                 height: 'auto', // カレンダーの高さを自動調整
+                width: 'auto', // カレンダーの高さを自動調整
                 buttonText: {
                     today: '当月',
                     month: '月',
