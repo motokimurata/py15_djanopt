@@ -59,19 +59,6 @@ def cal_opt(request):
     errors = form.errors
     print(errors)
     return None
-
-def display_csv(request):
-    tbl_result_load = request.session.get('tbl_result', None)
-    # データフレーム形式に戻す。
-    df_tbl_result = pd.DataFrame(tbl_result_load)   
-    #print(tbl_result_load)
-    tbl_result = df_tbl_result.to_html(index=False, escape=False, header=True)
-    
-    context = {
-        'tbl_result': tbl_result,
-    }
-    
-    return render(request, 'cntr/display_csv.html', context)
         
 def download_csv(request):
     # セッションから tbl_result を取得
