@@ -1,19 +1,18 @@
 from django import forms
 from datetime import date
 
-class UploadCSVForm(forms.Form):
-    WAREHOUSE_CHOICES = [
-        ('NE1PL', 'NE1PL'),
-        ('NE1SS', 'NE1SS'),
-        ('NE1BR', 'NE1BR'),
-        ('NE2PL', 'NE2PL'),
-        ('NE2SS', 'NE2SS'),
-        ('NE2BR', 'NE2BR'),
-        ('NW1PL', 'NW1PL'),
-        ('NW1SS', 'NW1SS'),
-        ('NW1BR', 'NW1BR'),
-    ]
-    
+WAREHOUSE_CHOICES = [
+    ('NE1PL', 'NE1PL'),
+    ('NE1SS', 'NE1SS'),
+    ('NE1BR', 'NE1BR'),
+    ('NE2PL', 'NE2PL'),
+    ('NE2SS', 'NE2SS'),
+    ('NE2BR', 'NE2BR'),
+    ('NW1PL', 'NW1PL'),
+    ('NW1SS', 'NW1SS'),
+    ('NW1BR', 'NW1BR'),
+]
+class UploadCSVForm(forms.Form):    
     warehouse_select = forms.ChoiceField(
         label="倉庫コード:",
         choices=WAREHOUSE_CHOICES,
@@ -39,4 +38,19 @@ class UploadCSVForm(forms.Form):
         #self.fields['end_date'].initial = date.today()
         
 
-
+class WarehouseCapacityFilterForm(forms.Form):
+    warehouse_code = forms.ChoiceField(
+        choices=WAREHOUSE_CHOICES,
+        required=False,
+        widget=forms.Select(attrs={'class': 'input'})
+    )
+    start_date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'}))
+        
+    
+class WarehouseUploadCSVForm(forms.Form):
+    csv_file = forms.FileField(label='Select a CSV file')

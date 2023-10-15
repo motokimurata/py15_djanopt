@@ -10,6 +10,11 @@ from django.urls import reverse
 import json
 from datetime import datetime
 from django.template import loader
+from cntr.models import WarehouseCapacity
+from .forms import WarehouseCapacityFilterForm
+from .forms import WarehouseUploadCSVForm
+
+import csv
 
 def frontpage(request):
     if request.method == 'POST':
@@ -118,3 +123,55 @@ def schedule(request):
 
     template = loader.get_template("cntr/schedule.html")
     return HttpResponse(template.render(context, request))
+
+def warehouse_capacity(request):
+    form = WarehouseCapacityFilterForm(request.GET)
+    capacities = WarehouseCapacity.objects.all()  # データベースから全てのキャパシティ情報を取得
+    if form.is_valid():
+        warehouse_code = form.cleaned_data.get('warehouse_code')
+        start_date = form.cleaned_data.get('start_date')
+        end_date = form.cleaned_data.get('end_date')
+
+        if warehouse_code:
+            capacities = capacities.filter(warehouse_code=warehouse_code)
+        if start_date:
+            capacities = capacities.filter(date__gte=start_date)
+        if end_date:
+            capacities = capacities.filter(date__lte=end_date)
+
+    return render(request, 'warehouse_capacity.html', {'form': form, 'capacities': capacities})
+
+def delete_records(request):
+    if request.method == 'POST':
+        record_ids = request.POST.getlist('record_id')
+        WarehouseCapacity.objects.filter(id__in=record_ids).delete()
+        return redirect('warehouse_capacity')  # 削除後、倉庫キャパシティページにリダイレクト
+    return redirect('warehouse_capacity')
+
+def warehouse_csv_upload(request):
+    error_message = ""  # エラーメッセージを初期化
+    if request.method == 'POST':
+        upload_csv_form = WarehouseUploadCSVForm(request.POST, request.FILES)
+        if upload_csv_form.is_valid():
+            csv_file = request.FILES['csv_file']
+            if csv_file.name.endswith('.csv'):
+                data = csv_file.read().decode('utf-8').splitlines()
+                reader = csv.reader(data)
+                next(reader)  # Skip the header row
+                for row in reader:
+                    warehouse_code, date_str, capacity_str = row
+                    date = datetime.strptime(date_str, '%Y/%m/%d').date()
+                    capacity = int(capacity_str)
+                    # ユニークな条件を確認し、データベースに追加
+                    if WarehouseCapacity.objects.filter(warehouse_code=warehouse_code, date=date).count() == 0:
+                        WarehouseCapacity.objects.create(warehouse_code=warehouse_code, date=date, capacity=capacity)
+                
+                # 成功時に warehouse_capacity ページにリダイレクト
+                return redirect('warehouse_capacity')
+            else:
+                error_message = "Invalid file format. Please upload a valid CSV file."
+        else:
+            error_message = "Form is not valid. Please check your file and try again."
+    else:
+        upload_csv_form = WarehouseUploadCSVForm()
+    return render(request, 'warehouse_capacity_upload.html', {'upload_csv_form': upload_csv_form, 'error_message': error_message})

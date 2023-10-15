@@ -1,0 +1,19 @@
+{% extends "cntr/base.html" %}
+{% block content %}
+<head>
+    <title>倉庫受入本数CSVアップロード</title>
+    <div class="center-text">
+        <p><strong class="underline is-grey">CP02.倉庫受入本数 計画アップロード画面</strong></p>
+    </div>
+</head>
+<body>
+    <a href="/" class="button is-danger is-hoverable is-inverted is-bold" style="margin: 10px 10px 0 0;">Back</a>
+
+    <!-- CSVアップロードフォーム -->
+    <form method="post" action="{% url 'warehouse_csv_upload' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ upload_csv_form.as_p }}
+        <button type="submit" class="button is-success">Upload CSV</button>
+    </form>
+</body>
+{% endblock %}

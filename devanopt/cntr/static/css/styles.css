@@ -69,3 +69,16 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.center-text {
+    text-align: center;
+}
+
+.underline {
+    border-bottom: 2px solid #333;
+    display: inline; 
+}
+
+.is-grey{
+    color: #333;
+}

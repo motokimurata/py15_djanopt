@@ -1,0 +1,68 @@
+{% extends "cntr/base.html" %}
+{% block content %}
+<head>
+    <style>
+        .center-text {
+            text-align: center;
+        }
+        
+        .underline {
+            border-bottom: 2px solid #333; /* 下線のスタイルを設定 */
+            display: inline; /* インライン要素として表示 */
+        }
+        .is-grey {
+            color: #333; /* テキストの色を濃いグレーに設定
+        }
+        </style>
+    <title>倉庫受入本数設定</title>
+    <div class="center-text">
+        <p><strong class="underline is-grey">CP01.倉庫別 受入本数 確認画面</strong></p>
+    </div>
+    <a href="/" class="button is-danger is-hoverable is-inverted is-bold" style="margin: 10px 10px 0 0;">Back</a>
+    <a href="/warehouse_csv_upload/" class="button is-danger is-hoverable" style="float: right; margin: 10px 10px 0 0;">Warehouse Capasity Upload</a>
+</head>
+<body>
+    <!-- 絞り込みフォームを追加 -->
+    <form method="get">
+        {{ form.as_p }}
+        <button class="button is-info" type="submit">Apply Filters</button>
+        <a class="button is-light" href="?">Clear Filters</a>   
+    </form>
+
+    <form method="post" action="{% url 'delete_records' %}">
+        {% csrf_token %}
+        <button type="submit" class="button is-danger is-hoverable is-bold" style="margin: 10px;">Delete Records</button>
+        <div style="overflow: auto;">
+            <table>
+                <tr>
+                    <th>
+                        <label for="select-all">Select All</label>
+                        <input type="checkbox" id="select-all">
+                    </th>
+                    <th>Warehouse Code</th>
+                    <th>Date</th>
+                    <th>Capacity</th>
+                </tr>
+                {% for capacity in capacities %}
+                <tr>
+                    <td><input type="checkbox" name="record_id" value="{{ capacity.id }}"></td>
+                    <td>{{ capacity.warehouse_code }}</td>
+                    <td>{{ capacity.date }}</td>
+                    <td>{{ capacity.capacity }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </form>
+
+    <script>
+        // チェックボックスの一括選択/解除を制御
+        document.getElementById('select-all').addEventListener('change', function () {
+            var checkboxes = document.querySelectorAll('input[name="record_id"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = this.checked;
+            }
+        });
+    </script>
+</body>
+{% endblock %}
